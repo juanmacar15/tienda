@@ -125,6 +125,8 @@ h1 {
 }
 
 .boton-agregar {
+  display: flex;
+  justify-content: space-between;
   margin-top: 0.5rem;
   background-color: #4299e1;
   color: white;
@@ -163,6 +165,8 @@ h1 {
 }
 
 .carrito-item {
+  display: flex;
+  justify-content: space-between;
   color: #4a5568;
   display: flex;
   align-items: center;
@@ -180,4 +184,14 @@ h1 {
 .carrito-total {
   margin-top: 0.5rem;
   font-weight: bold;
+}
+
+.centrar-info{
+  display: flex;
+  align-items: center;
+}
+
+.filtrar-productos{
+  height: 30px;
+  margin: 20px;
 }

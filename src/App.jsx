@@ -2,46 +2,97 @@ import React, { useState } from 'react';
 import ProductCard from './Components/ProductCard'
 
 const productos = [
-  { id: 1, nombre: 'Camiseta Colombia', precio: 20, imagen: 'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/dd3211ccf3b8485091d5825e4b2bc913_9366/Camiseta_Local_Seleccion_Colombia_24_Version_Jugador_Amarillo_IP8280_21_model.jpg' },
-  { id: 2, nombre: 'Camiseta Argentina', precio: 20, imagen: 'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/05596cc5f7724da8946f5362652319d0_9366/Camiseta_Local_Seleccion_Argentina_24_Blanco_IP8409_21_model.jpg' },
-  { id: 3, nombre: 'Camiseta Deportiva', precio: 20, imagen: 'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/5ee24b019f8640e886ffd3e19a6f2fc8_9366/Camiseta_de_Entrenamiento_Power_Rosa_IX9092_HM1.jpg' },
+  {
+    id: 1,
+    nombre: 'Camiseta Colombia',
+    precio: 20,
+    imagen: 'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/dd3211ccf3b8485091d5825e4b2bc913_9366/Camiseta_Local_Seleccion_Colombia_24_Version_Jugador_Amarillo_IP8280_21_model.jpg'
+  },
+  {
+    id: 2,
+    nombre: 'Camiseta Argentina',
+    precio: 20,
+    imagen: 'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/05596cc5f7724da8946f5362652319d0_9366/Camiseta_Local_Seleccion_Argentina_24_Blanco_IP8409_21_model.jpg'
+  },
+  {
+    id: 3,
+    nombre: 'Camiseta Deportiva',
+    precio: 20,
+    imagen: 'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/5ee24b019f8640e886ffd3e19a6f2fc8_9366/Camiseta_de_Entrenamiento_Power_Rosa_IX9092_HM1.jpg'
+  },
+  {
+    id: 4,
+    nombre: 'bolso arcoiris',
+    precio: 10,
+    imagen: 'https://i.ibb.co/CvfC8Zw/6.png',
+  },
+  {
+    id: 5,
+    nombre: 'Bolso de flores',
+    precio: 30,
+    imagen: 'https://i.ibb.co/zQBq1bm/5.png',
+  }, {
+    id: 7,
+    nombre: 'Bolso en trapillo',
+    precio: 10,
+    imagen: 'https://i.ibb.co/hLnjjPd/7.png',
+  }
 ];
 
 const TiendaVirtual = () => {
   const [carrito, setCarrito] = useState([]);
+  const [buscar, setBuscar] = useState('');
 
   const agregarAlCarrito = (producto) => {
     setCarrito([...carrito, producto]);
   };
 
+  const vaciarCarrito = () => {
+    setCarrito([]);
+  }
+
+  const eliminarProducto = (id) => {
+    setCarrito(carrito.filter((producto) => producto.id != id))
+  }
+
+  const filtrarProductos = productos.filter((productos) => 
+    productos.nombre.toLowerCase().includes(buscar.toLowerCase()))
+  console.log(filtrarProductos)
+
   return (
     <div className="container">
       <h1>Mi Tienda Virtual</h1>
-      
+
+      <input className='filtrar-productos' placeholder='buscar producto' type="text" value={buscar} onChange={(e) => setBuscar(e.target.value)} />
+
       <div className="productos-grid">
-        {productos.map((producto) => (
-          <ProductCard 
-            key={producto.id} 
-            producto={producto} 
+        {filtrarProductos.length > 0 ? filtrarProductos.map((producto) => (
+          <ProductCard
+            key={producto.id}
+            producto={producto}
             onAgregarAlCarrito={agregarAlCarrito}
           />
-        ))}
+        )) : (<p>no hay resultados</p>) }
       </div>
-      
+
       <div className="carrito">
         <h2>Carrito</h2>
         <div className="boton-agregar">
           <p>{carrito.length} artículos</p>
+          <button onClick={() => vaciarCarrito()}>vaciar carrito</button>
         </div>
         <ul className="mt-2">
           {carrito.map((item, index) => (
-            <div key={index} className="carrito-item ">
-              <img 
-                src={item.imagen} 
-                alt={item.nombre} 
-                className="carrito-item-imagen"
-              />
-              <span>{item.nombre} - ${item.precio}</span>
+            <div key={item.id} className="carrito-item ">
+              <div className='centrar-info'>
+                <img
+                  src={item.imagen}
+                  alt={item.nombre}
+                  className="carrito-item-imagen"
+                />
+                <span>{item.nombre} - ${item.precio}</span>
+              </div>
+              <button onClick={() => (eliminarProducto(item.id))}> X </button>
             </div>
           ))}
         </ul>
